@@ -16,8 +16,9 @@ def activation_function(layer):
 
 
 class Neuron: 
-    def __init__(self, weight):
-        self.weight = np.random.randn() 
+    def __init__(self, num_weights): # num_weights reflects num of outputs
+        self.bias = np.random.randn()
+        self.weights = [np.random.random() for i in range(num_weights)]
 
 class Layer: 
     
