@@ -3,6 +3,13 @@
 #improting libraries
 import numpy as np 
 
+def calc_error(y_true, y_pred): # Produces the root means squared error
+    if len(y_true) != len(y_pred):
+        raise ValueError("The length of y_true and y_pred must be equal")
+    total = 0
+    for i in range(len(y_true)):
+        total += (1/len(y_true))*(((y_true[i] - y_pred[i])**2))
+    return total**0.5
 
 def sigmoid(x):
     return 1/(1+np.exp(-x))
