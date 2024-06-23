@@ -1,8 +1,23 @@
-
-
 #improting libraries
 import numpy as np 
 
+
+def create_layers(vector: list[int]):
+    '''
+    the vector stores the number of neurons in each layer
+    function returns a list of lists of neurons 
+    '''
+    
+    first_layer_count = vector[0]
+    last_layer_count = vector[-1]
+    middle_layers= vector[1:-1] 
+    layers=[]
+    # Adding each layer to layers
+    layers.append([Neuron() for num in range(first_layer_count)])
+    for layer_count in middle_layers: 
+        layers.append([Neuron() for num in range(layer_count)])
+    layers.append([Neuron() for num in range(last_layer_count)]) 
+    return layers 
 
 def sigmoid(x):
     return 1/(1+np.exp(-x))
@@ -16,7 +31,7 @@ def activation_function(layer):
 
 
 class Neuron: 
-    def __init__(self, weight):
+    def __init__(self):
         self.weight = np.random.randn() 
 
 class Layer: 
@@ -38,4 +53,12 @@ class Layer:
         out_layer = activation_function(out_layer) + self.bias 
         
         return out_layer 
+
+#testing 
+if __name__=="__main__":
+    net = create_layers([3,4,2,3])
+    for layer in net:
+        print(layer)
+    
+    
     
