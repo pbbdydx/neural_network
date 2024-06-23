@@ -47,29 +47,60 @@ class Neuron:
 
 class Layer: 
     
-    def __init__(self):
-        self.input = [Neuron.weight for _ in range(3)] #creates a list of neurons that act like a layer 
-        return self.input
-    
-    
-    def forward(self, in_layer, out_layer):
-        self.bias = np.rand.randint(-5, 5)
-        self.input = __init__()
-        self.weights = np.array([np.randon.rand(len(out_layer)) for neuron in self.input]) #create a matrix and convert it into a numpy object 
+    def __init__(self, in_list):
+        self.input = in_list #creates a list of neurons that act like a layer 
         
-        if self.weights.shape[1]==self.input.shape[0]: # number of columns in the matrix matches the number of rows in the input layer
-            out_layer = np.dot(self.weights, in_layer)       
+        
+    def __iter__(self):
+        return iter(self.input)
+    
+    def forward(self,next_layer):
+        matrix_of_weights = []
+        
+        print(self.input)
+        for neuron in self:
+             
+            matrix_of_weights.append(neuron.weights)
+        
+        # turn matrix of weights and the next layer into a numpy array for easy computation 
+        # matrix_of_weights = np.array(matrix_of_weights)
+        # print(matrix_of_weights)
+        # next_layer = np.array(next_layer)
+        
+        #chatgpt suggestion ----- will try some more testing with this tomorrow 
+        
+        # for neuron in self: 
+        #     print(neuron.weights)
+        #     matrix_of_weights.append(neuron.weights)
+        
+        # turn matrix of weights and the next layer into a numpy array for easy computation 
+        matrix_of_weights = np.array(matrix_of_weights)
+        print("Matrix of weights:")
+        print(matrix_of_weights)
+        
+        next_layer_inputs = np.array([neuron.weights for neuron in next_layer]).T
+        print("Next layer inputs (transposed):")
+        print(next_layer_inputs)
+        
+        #doing the forward propogating
+        if matrix_of_weights.shape[1]==next_layer_inputs.shape[0]: # number of columns in the matrix matches the number of rows in the input layer
+            out_layer = np.dot(matrix_of_weights, in_layer)
+        else: raise ValueError(f"The dimensions of the matrix and next layer do not allow for a compatible matrix multiplication .\nShape of matrix: {matrix_of_weights.shape}\nShape of next layer: {next_layer_inputs.shape}. ")
         
         #apply activation function to the output layer and then add the bias 
-        out_layer = activation_function(out_layer) + self.bias 
+        out_layer = activation_function(out_layer) + self.bias #have to change this too. instead of adding a constant add the vector of biases
+        
         
         return out_layer 
 
 #testing 
 if __name__=="__main__":
     net = create_layers([3,4,2,3])
-    for layer in net:
-        print(layer)
+    # for layer in net:
+    #     print(layer)
+    first_layer = Layer(net[0])
+    second_layer = Layer(net[1])
+    print(first_layer.forward(second_layer))
     
     
     
