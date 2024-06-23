@@ -20,10 +20,13 @@ def create_layers(vector: list[int]):
     middle_layers= vector[1:-1] 
     layers=[]
     # Adding each layer to layers
-    layers.append([Neuron() for num in range(first_layer_count)])
+    layers.append([Neuron(vector[1]) for num in range(first_layer_count)])
+    neuron_index = 2
     for layer_count in middle_layers: 
-        layers.append([Neuron() for num in range(layer_count)])
-    layers.append([Neuron() for num in range(last_layer_count)]) 
+        layers.append([Neuron(vector[neuron_index]) for num in range(layer_count)])
+        neuron_index += 1
+    layers.append([Neuron(vector[-1]) for num in range(last_layer_count)]) # Placeholder
+    # (We will need a separate type of output neuron that has no weights)
     return layers 
 
 def sigmoid(x):
